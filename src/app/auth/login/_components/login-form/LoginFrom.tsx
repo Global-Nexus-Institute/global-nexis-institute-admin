@@ -8,6 +8,7 @@ import React from "react";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import Password from "antd/es/input/Password";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -53,15 +54,14 @@ export default function LoginFrom() {
                 />
               </div>
               <div>
-                <InputField
-                  label="Password"
+                <label htmlFor="password">Password <span className="text-red-500">*</span></label>
+                <Password
                   name="password"
                   id="password"
-                  password
                   placeholder="Password"
                   type="password"
                   onChange={handleChange}
-                  icon={<FontAwesomeIcon icon={faLock} />}
+                  iconRender={() => <FontAwesomeIcon icon={faLock} />}
                   required
                 />
               </div>

@@ -46,7 +46,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   const [field, meta] = useField({ name, ...props });
   const showError = meta.touched && meta.error;
 
-  let InputComponent: any = Input;
+  const  InputComponent: any = Input;
   return (
     <div className={`field ${showError ? "error" : ""}`}>
       {label && (
@@ -68,17 +68,7 @@ export const InputField: React.FC<InputFieldProps> = ({
             onChange={onChange}
           />
         )}
-        {password && (
-          <Password
-            {...field}
-            {...props}
-            type={InputComponent === "input" ? (type ? type : "") : ""}
-            id={name}
-            name={name}
-            placeholder={placeholder}
-            iconRender={() => icon}
-          />
-        )}
+        
       </FormItem>
     </div>
   );

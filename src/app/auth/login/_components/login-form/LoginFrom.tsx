@@ -54,7 +54,9 @@ export default function LoginFrom() {
                 />
               </div>
               <div>
-                <label htmlFor="password">Password <span className="text-red-500">*</span></label>
+                <label htmlFor="password">
+                  Password <span className="text-red-500">*</span>
+                </label>
                 <Password
                   name="password"
                   id="password"
@@ -85,7 +87,7 @@ export default function LoginFrom() {
                 </Button>
               </div>
               <div className="py-5 cursor-pointer">
-                Don't yet have an account?{" "}
+                Don&apos;t yet have an account?{" "}
                 <span onClick={handleSignUp}>Sign Up</span>
               </div>
             </div>

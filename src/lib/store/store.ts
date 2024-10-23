@@ -3,11 +3,13 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 import authReducer from "../features/slices/auth.slice"; // Root reducer combining all your slices
 import coursesReducer from "../features/slices/courses/courses.slice";
+import usersResucer from "../features/slices/users/users.slice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     courses: coursesReducer,
+    users: usersResucer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }), // thunk is automatically included, but this shows how to add custom middleware

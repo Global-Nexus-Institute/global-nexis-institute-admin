@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import LoginFrom from "./_components/login-form/LoginFrom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/store.hooks";
 import { RootState } from "@/lib/store/store";
-import { Alert } from "antd";
+import { Alert, Spin } from "antd";
 import { resetAuthState } from "@/lib/features/slices/auth.slice";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +29,8 @@ export default function LoginPage() {
     }
   }, [loading, error, successMesage]);
   return (
-    <div className="flex flex-col w-full justify-center items-center bg-blue-900 h-full py-10">
+    <div className="flex flex-col w-full justify-center items-center  h-full py-10">
+      <Spin spinning={loading} size="large" />
       {error && (
         <Alert
           message={error}

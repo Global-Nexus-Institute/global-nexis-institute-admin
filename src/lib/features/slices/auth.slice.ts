@@ -4,11 +4,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
+  onAuthStateChanged,
+  User,
 } from "firebase/auth";
 
 import { auth } from "../../firebase";
 import { login, logout, signup } from "@/shared/api/auth.api";
 import { UserCreateType, UsersDataType } from "@/shared/types";
+import { act } from "react";
 
 interface AuthState {
   user: UsersDataType | null;
@@ -47,7 +50,12 @@ export const loginUserThunk = createAsyncThunk(
 
       // Send the token to Flask backend
       const response = await login(token);
-      console.log("Login response:", response.data);
+
+      if (response.status == 200) {
+        // take action on sucessfull login
+        localStorage.setItem("LOCAL_USER_TOKEN", token);
+      }
+
       return response.data; // Handle response from Flask (e.g., user data or session)
     } catch (error: any) {
       console.log("Login error:", error);
@@ -64,11 +72,13 @@ export const logoutUserThunk = createAsyncThunk(
       await signOut(auth); // Sign out from Firebase
       // Optionally, notify the Flask backend about the logout
       await logout();
+      localStorage.removeItem("LOCAL_USER_TOKEN");
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
   },
 );
+
 
 // Thunk sign up
 export const signupUserThunk = createAsyncThunk(
@@ -148,6 +158,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetAuthState, setAuthUser, } = authSlice.actions;
+export const { resetAuthState, setAuthUser, setLoginError, setLoginSuccess } = authSlice.actions;
 // Export the reducer to be added to the store
 export default authSlice.reducer;

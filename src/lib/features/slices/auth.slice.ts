@@ -1,5 +1,5 @@
 // features/slice/auth.slice.ts
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -73,10 +73,7 @@ export const logoutUserThunk = createAsyncThunk(
 // Thunk sign up
 export const signupUserThunk = createAsyncThunk(
   "auth/signupUserThunk",
-  async (
-    data: UserCreateType ,
-    { rejectWithValue },
-  ) => {
+  async (data: UserCreateType, { rejectWithValue }) => {
     try {
       const userCredential = await signup(data);
       const user = userCredential.data;
@@ -99,6 +96,9 @@ const authSlice = createSlice({
     },
     setLoginSuccess: (state, action) => {
       state.successMesage = action.payload;
+    },
+    setAuthUser: (state, { payload }: PayloadAction<UsersDataType>) => {
+      state.user = payload as UsersDataType;
     },
     resetAuthState: () => initialState,
   },
@@ -131,7 +131,7 @@ const authSlice = createSlice({
         state.error = action.payload as string;
         state.successMesage = null;
       });
-      // signup cases
+    // signup cases
     builder
       .addCase(signupUserThunk.pending, (state) => {
         state.loading = true;
@@ -148,5 +148,6 @@ const authSlice = createSlice({
   },
 });
 
+export const { resetAuthState, setAuthUser, } = authSlice.actions;
 // Export the reducer to be added to the store
 export default authSlice.reducer;

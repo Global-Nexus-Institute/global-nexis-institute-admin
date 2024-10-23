@@ -1,6 +1,7 @@
 export type UsersDataType = {
+  _id: string;
   id: number;
-  name: string;
+  names: string;
   email: string;
   role: string;
   createdAt: string;

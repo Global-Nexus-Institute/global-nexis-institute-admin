@@ -16,5 +16,9 @@ export const endpoints = {
     signup: "/auth/signup",
     logout: "/auth/logout",
   },
+  users: {
+    root: "/users",
+  },
+
   courses: { root: "/courses" },
 };

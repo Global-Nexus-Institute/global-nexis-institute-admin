@@ -25,7 +25,7 @@ export default function SingUpPage() {
     }
   }, [loading, error, successMesage]);
   return (
-    <div className="flex flex-col w-full justify-center items-center bg-blue-900 h-screen py-10">
+    <div className="flex flex-col w-full justify-center items-center  py-10">
       {error && <Alert message={error} onClick={() => closeAlert()} />}
       <SignUp />
     </div>

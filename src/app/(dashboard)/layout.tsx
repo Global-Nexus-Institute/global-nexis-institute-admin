@@ -1,7 +1,10 @@
 "use client";
 import { RouteLoader } from "@/components/route-loader/RouteLoader";
-import { Avatar, Layout, Menu } from "antd";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Avatar, Layout, Menu, Image } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const { Header, Content, Sider } = Layout;
@@ -33,9 +36,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
   return (
     <>
-    <RouteLoader />
+      <RouteLoader />
       <Layout className="h-full">
         <Sider
           className="bg-gray-800"
@@ -44,7 +48,9 @@ export default function DashboardLayout({
           collapsed={collapsed}
           style={siderStyle}
         >
-          <div className="flex h-20 items-center sticky top-0">Some logo</div>
+          <div className="flex h-20 items-center sticky top-0">
+            <Image src="/images/logo.png" alt="logo" height={50} width={50} />
+          </div>
           <Menu
             items={menuItems}
             theme="dark"
@@ -55,12 +61,36 @@ export default function DashboardLayout({
         <Layout>
           <Header
             className="bg-white shadow-md px-4 z-[100] sticky top-0"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              backgroundColor: "white",
+            }}
           >
-            <div className="logo">Logo</div>
-            <Menu theme="dark" mode="horizontal" className="text-white" />
+            <div
+              className="logo flex justify-center bg-white cursor-pointer "
+              onClick={() => router.push("/")}
+            >
+              <Image
+                src="/images/logo.png"
+                alt="logo"
+                height={80}
+                width={80}
+                preview={false}
+              />
+            </div>
+            <Menu
+              theme="light"
+              mode="horizontal"
+              className="text-white"
+              items={menuItems}
+            />
             <div>
-              <Avatar />
+              <Avatar
+                size={50}
+                style={{ color: "#87d068" }}
+                icon={<FontAwesomeIcon icon={faUser} />}
+              />
             </div>
           </Header>
           <Content className="m-4 h-full p-6 bg-white shadow-md rounded-md ml-[15%]">

@@ -61,12 +61,6 @@ export default function Home() {
 
   const router = useRouter();
 
-  const token = localStorage.getItem("LOCAL_USER_TOKEN");
-
-  useEffect(() => {
-    console.log("🚀 ~ file: page.tsx:useEffect ~ token:", token);
-  }, []);
-
   useEffect(() => {
     if (user === null) {
       const timer = setTimeout(() => {

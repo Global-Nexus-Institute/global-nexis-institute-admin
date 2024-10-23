@@ -1,5 +1,4 @@
 "use client";
-'use client';
 import { Avatar, Layout, Menu } from "antd";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,6 +9,7 @@ const siderStyle: React.CSSProperties = {
   overflow: "auto",
   position: "fixed",
   height: "100vh",
+  width: "20%",
   insetInlineStart: 0,
   scrollbarWidth: "thin",
   scrollbarColor: "unset",
@@ -34,19 +34,24 @@ export default function DashboardLayout({
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout className="h-full">
-      <Sider className="bg-gray-800"  trigger={null} collapsible collapsed={collapsed}>
-        <div className="flex h-20 items-center">Some logo</div>
+      <Sider
+        className="bg-gray-800"
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        style={siderStyle}
+      >
+        <div className="flex h-20 items-center sticky top-0">Some logo</div>
         <Menu
           items={menuItems}
           theme="dark"
           mode="inline"
           className="text-white"
-          style={siderStyle}
         />
       </Sider>
       <Layout>
         <Header
-          className="bg-white shadow-md px-4"
+          className="bg-white shadow-md px-4 z-[100] sticky top-0"
           style={{ display: "flex", justifyContent: "space-between" }}
         >
           <div className="logo">Logo</div>
@@ -55,7 +60,7 @@ export default function DashboardLayout({
             <Avatar />
           </div>
         </Header>
-        <Content className="m-4 p-6 bg-white shadow-md rounded-md">
+        <Content className="m-4 h-full p-6 bg-white shadow-md rounded-md ml-[15%]">
           {children}
         </Content>
       </Layout>

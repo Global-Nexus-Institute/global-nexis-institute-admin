@@ -55,7 +55,7 @@ export default function Home() {
   const { user, loading, error, successMesage } = useAppSelector(
     (store: RootState) => store.auth,
   );
-  const { logOutUser } = useAuth();
+  const { logOutUser, authStatus } = useAuth();
 
   const dispatch = useDispatch();
 

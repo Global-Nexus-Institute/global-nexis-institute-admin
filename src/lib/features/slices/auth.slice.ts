@@ -11,7 +11,6 @@ import {
 import { auth } from "../../firebase";
 import { login, logout, signup } from "@/shared/api/auth.api";
 import { UserCreateType, UsersDataType } from "@/shared/types";
-import { act } from "react";
 
 interface AuthState {
   user: UsersDataType | null;
@@ -43,7 +42,6 @@ export const loginUserThunk = createAsyncThunk(
         password,
       );
       const user = userCredential.user;
-      console.log("Login user:", user, auth);
 
       // Get the Firebase token
       const token = await user.getIdToken();
@@ -53,7 +51,7 @@ export const loginUserThunk = createAsyncThunk(
 
       if (response.status == 200) {
         // take action on sucessfull login
-        localStorage.setItem("LOCAL_USER_TOKEN", token);
+        localStorage.setItem("local_user_token", token);
       }
 
       return response.data; // Handle response from Flask (e.g., user data or session)

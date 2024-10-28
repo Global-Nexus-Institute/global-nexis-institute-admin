@@ -34,34 +34,42 @@ export const useAuth = () => {
 
   const loginUser = async (email: string, password: string) => {
     setLoginLoading(true);
-    await dispatch(loginUserThunk({ email, password })).finally(() => {
-      setLoginLoading(false);
-    });
+    await dispatch(loginUserThunk({ email, password }))
+      .then((value) => {
+        if (value.payload) {
+          setAuthStatus("authenticated");
+          setAuthUser(value.payload);
+        }
+      })
+      .finally(() => {
+        setLoginLoading(false);
+      });
   };
 
   // keep user signed in
   const signedInUser = () => {
     onAuthStateChanged(auth, (user) => {
-      if (user && user.emailVerified) {
+      if (user) {
         const store = {
           UID: user.uid,
           email: user.email as string,
           displayName: user.displayName as string,
         };
         user.getIdToken(true).then(async (token) => {
-          // console.log("🚀 ~ user.getIdToken ~ token:", user);
           try {
             const profileDataResponse = await login(token);
-            if (profileDataResponse.data.statusCode != 200) {
+            // console.log("🚀 ~ user.getIdToken ~ token:", profileDataResponse);
+            if (profileDataResponse.status != 200) {
               logout();
               setLoginError(
                 `Login error. ${profileDataResponse.data.message ?? ""}`,
               );
             } else {
               //login complete and ok
+
               setSession(user);
-              localStorage.setItem("LOCAL_USER_TOKEN", token);
-              const authUser = profileDataResponse.data.data;
+              localStorage.setItem("local_user_token", token);
+              const authUser = profileDataResponse.data;
               dispatch(setAuthUser(authUser));
               setAuthStatus("authenticated");
             }
@@ -73,7 +81,7 @@ export const useAuth = () => {
       } else {
         setAuthStatus("unauthenticated");
         setSession(null);
-        localStorage.removeItem("LOCAL_USER_TOKEN");
+        localStorage.removeItem("local_user_token");
       }
     });
   };

@@ -29,7 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        style={{ height: "100%" }}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <StoreProvider>
           <AntdStyledComponentsProvider>

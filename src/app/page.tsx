@@ -27,27 +27,19 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   {
-    label: "Home",
+    label: <Link href="/">Home</Link>,
     key: "home",
     icon: <HomeFilled />,
   },
   {
-    label: " Courses",
+    label: <Link href="/courses">Courses</Link>,
     key: "courses",
     icon: <AppstoreOutlined />,
   },
   {
-    label: "Users",
+    label: <Link href="/users">Students</Link>,
     key: "users",
     icon: <SettingOutlined />,
-  },
-  {
-    key: "alipay",
-    label: (
-      <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-        Navigation Four - Link
-      </a>
-    ),
   },
 ];
 
@@ -106,7 +98,7 @@ export default function Home() {
           <div className="flex justify-center items-center basis-1/5 border">
             {user && (
               <div className="flex gap-4">
-                <Avatar size={40}>{user.names[0]}</Avatar>{" "}
+                <Avatar size={40}>{user.names && user.names[0]}</Avatar>{" "}
                 <div
                   onClick={handLogOut}
                   className="text-black text-xl cursor-pointer"

@@ -40,7 +40,7 @@ export default function SignUp() {
           name: "",
           role: "admin",
           address: { city: "", country: "", street: "", zipCode: "" },
-          phonneNumber: "",
+          phoneNumber: "",
         }}
         onSubmit={(values, {resetForm}) => {
           createUser(values).finally(() => {

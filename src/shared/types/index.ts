@@ -13,7 +13,7 @@ export type UserCreateType = {
   email: string;
   password: string;
   role: string;
-  phonneNumber: string;
+  phoneNumber: string;
   profileImage?: string;
   address?: {
     city: string;

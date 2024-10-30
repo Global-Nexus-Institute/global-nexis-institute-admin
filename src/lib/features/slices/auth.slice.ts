@@ -56,8 +56,8 @@ export const loginUserThunk = createAsyncThunk(
 
       return response.data; // Handle response from Flask (e.g., user data or session)
     } catch (error: any) {
-      console.log("Login error:", error);
-      return rejectWithValue(error.message);
+      console.log("Login error:", error.response.data);
+      return rejectWithValue(error.response.data.error);
     }
   },
 );
@@ -76,7 +76,6 @@ export const logoutUserThunk = createAsyncThunk(
     }
   },
 );
-
 
 // Thunk sign up
 export const signupUserThunk = createAsyncThunk(
@@ -104,6 +103,10 @@ const authSlice = createSlice({
     },
     setLoginSuccess: (state, action) => {
       state.successMesage = action.payload;
+    },
+    resetAuthMessages: (state) => {
+      state.successMesage = null;
+      state.error = null;
     },
     setAuthUser: (state, { payload }: PayloadAction<UsersDataType>) => {
       state.user = payload as UsersDataType;
@@ -156,6 +159,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetAuthState, setAuthUser, setLoginError, setLoginSuccess } = authSlice.actions;
+export const { resetAuthState, setAuthUser, setLoginError, setLoginSuccess } =
+  authSlice.actions;
 // Export the reducer to be added to the store
 export default authSlice.reducer;

@@ -5,8 +5,10 @@ import { RootState } from "@/lib/store/store";
 import SignUp from "./_components/SignUpForm";
 import { Alert } from "antd";
 import { resetAuthState } from "@/lib/features/slices/auth.slice";
+import { useRouter } from "next/navigation";
 
 export default function SingUpPage() {
+  const router = useRouter();
   const { user, loading, error, successMesage } = useAppSelector(
     (store: RootState) => store.auth,
   );
@@ -18,6 +20,7 @@ export default function SingUpPage() {
   useEffect(() => {
     if (!loading && successMesage) {
       alert(successMesage);
+      router.replace(`/?user=${user?._id}`);
     }
     if (!loading && error) {
       // alert(error);

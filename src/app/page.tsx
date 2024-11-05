@@ -27,17 +27,29 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   {
-    label: <Link href="/">Home</Link>,
+    label: (
+      <Link href="/" className="text-white">
+        Home
+      </Link>
+    ),
     key: "home",
     icon: <HomeFilled />,
   },
   {
-    label: <Link href="/courses">Courses</Link>,
+    label: (
+      <Link href="/courses" className="text-white">
+        Courses
+      </Link>
+    ),
     key: "courses",
     icon: <AppstoreOutlined />,
   },
   {
-    label: <Link href="/users">Students</Link>,
+    label: (
+      <Link href="/users" className="text-white">
+        Students
+      </Link>
+    ),
     key: "users",
     icon: <SettingOutlined />,
   },
@@ -78,30 +90,33 @@ export default function Home() {
   };
 
   return (
-    <div className="h-full">
+    <div className="h-[100%] w-full">
       <RouteLoader />
       <Spin spinning={loading} size={"large"} tip={"..Looading"}>
-        <div className="flex h-20 bg-white">
-          <div className="flex rounded-full basis-1/5 border border-gray-300 m-3">
-            Logo
-          </div>
-          <div className="flex basis-3/5 h-full">
+        <div className="flex h-20 bg-gndarkblue">
+          <div className="flex rounded-full basis-1/5  m-3">Logo</div>
+          <div className="flex basis-3/5 h-full bg-gndarkblue text-white">
             <Menu
               onClick={onClick}
               selectedKeys={[current]}
               mode="horizontal"
               items={items}
-              className="flex w-full items-center justify-center h-full"
+              style={{
+                backgroundColor: "transparent",
+                color: "white",
+                fontWeight: "bold",
+              }}
+              className="flex w-full items-center justify-center h-full bg-gndarkblue "
             />
           </div>
 
-          <div className="flex justify-center items-center basis-1/5 border">
+          <div className="flex justify-center items-center basis-1/5">
             {user && (
               <div className="flex gap-4">
                 <Avatar size={40}>{user.names && user.names[0]}</Avatar>{" "}
                 <div
                   onClick={handLogOut}
-                  className="text-black text-xl cursor-pointer"
+                  className="text-white text-lg cursor-pointer"
                 >
                   Logout
                 </div>
@@ -110,21 +125,21 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col justify-center ">
-          <div className="h-screen md:flex ">
-            <div className="flex flex-col pl-10 basis-1/2 bg-gray-600 h-full justify-center">
+        <div className="flex flex-col bg-gradient-to-b from-gndarkblue to-gnpinkdark h-[80%] ">
+          <div className="h-full flex ">
+            <div className="flex flex-col pl-10 basis-1/2 justify-center items-center">
               <div>
                 <Image
                   src="/images/logo.png"
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   alt="logo"
                 />
               </div>
               <div className="flex gap-4 ">
                 {user ? (
                   <div>
-                    <h1 className="text-2xl font-bold mt-3 ">
+                    <h1 className="text-4xl font-bold mt-3 ">
                       Welcome {user.names}
                     </h1>
                   </div>
@@ -135,7 +150,7 @@ export default function Home() {
                 )}
               </div>
             </div>
-            <div className="p-3 basis-1/2 h-full space-y-4">
+            <div className="p-3 basis-1/2 h-[80%] space-y-4">
               <Row gutter={6}>
                 <Col span={12}>
                   <Card>

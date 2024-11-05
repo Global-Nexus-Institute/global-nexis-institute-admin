@@ -69,6 +69,8 @@ const UserTable: React.FC<UserTableProps> = ({ students }) => {
           student ?? {
             _id: "",
             id: 0,
+            firstName: "",
+            lastName: "",
             names: "",
             email: "",
             role: "",

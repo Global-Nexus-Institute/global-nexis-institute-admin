@@ -24,7 +24,7 @@ export default function LoginLayout({
     }
   }, [authState, authStatus]);
   return (
-    <div className="w-screen h-screen bg-[#19173C] flex items-center justify-center">
+    <div className="w-screen min-h-[100vh] bg-[#19173C] flex items-center justify-center">
       <Spin
         size={"large"}
         style={{ color: "#182c61", fontSize: "50px" }}

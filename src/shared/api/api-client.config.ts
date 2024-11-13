@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { baseEndpoint } from "../constants";
-import { sign } from "crypto";
 
 export const backend = axios.create({
   baseURL: baseEndpoint,

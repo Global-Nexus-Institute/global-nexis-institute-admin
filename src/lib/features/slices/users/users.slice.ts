@@ -2,7 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { UsersDataType } from "@/shared/types";
 
-import { getUsers, updateUser } from "@/shared/api/users.api";
+import {
+  getStaffs,
+  getStudents,
+  getUsers,
+  updateUser,
+} from "@/shared/api/users.api";
 import { stat } from "fs";
 
 interface UsersState {
@@ -34,6 +39,33 @@ export const getUsersThunk = createAsyncThunk("users/getUsers", async () => {
   }
 });
 
+export const getStudentsThunk = createAsyncThunk(
+  "users/getStudents",
+  async () => {
+    try {
+      // get all users
+      const res = await getStudents();
+      console.log("Students:", res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log("Users error:", error);
+      return error.response.data ?? error.response.message;
+    }
+  },
+);
+
+export const getStaffThunk = createAsyncThunk("users/getStaff", async () => {
+  try {
+    // get all users
+    const res = await getStaffs();
+    console.log("Staff:", res.data);
+    return res.data;
+  } catch (error: any) {
+    console.log("Users error:", error);
+    return error.response.data ?? error.response.message;
+  }
+});
+
 export const updateUserThunk = createAsyncThunk(
   "users/updateUser",
   async ({ id, data }: { id: string; data: any }) => {
@@ -54,9 +86,16 @@ const UsersSlice = createSlice({
   initialState,
   reducers: {
     resetUserStateMessages: (state) => {
-        state.userSuccessMesage = "";
-        state.userErrorMessage = "";
-    }
+      state.userSuccessMesage = "";
+      state.userErrorMessage = "";
+    },
+    resetState(state) {
+      state.data = [];
+      state.details = null;
+      state.loading = false;
+      state.userSuccessMesage = "";
+      state.userErrorMessage = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,7 +108,10 @@ const UsersSlice = createSlice({
       })
       .addCase(getUsersThunk.rejected, (state) => {
         state.loading = false;
-      })
+      });
+
+    // Updating user
+    builder
       .addCase(updateUserThunk.pending, (state) => {
         state.loading = true;
       })
@@ -80,9 +122,35 @@ const UsersSlice = createSlice({
       .addCase(updateUserThunk.rejected, (state) => {
         state.loading = false;
       });
+
+    // getting students
+    builder
+      .addCase(getStudentsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getStudentsThunk.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(getStudentsThunk.rejected, (state) => {
+        state.loading = false;
+      });
+
+    // getting staff
+    builder
+      .addCase(getStaffThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getStaffThunk.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(getStaffThunk.rejected, (state) => {
+        state.loading = false;
+      });
   },
 });
 
-export const {resetUserStateMessages} = UsersSlice.actions;
+export const { resetUserStateMessages, resetState } = UsersSlice.actions;
 
 export default UsersSlice.reducer;

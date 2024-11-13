@@ -1,7 +1,11 @@
-'use client';
+"use client";
 import { InputField } from "@/components/input-field/InputField";
 import { useAuth } from "@/shared/hooks/auth/auth.hooks";
-import { faLock, faEnvelope, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLock,
+  faEnvelope,
+  faSignIn,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Checkbox, Flex, Form, Image, Input, Select } from "antd";
 import { Formik, useField } from "formik";
@@ -12,6 +16,8 @@ import { useRouter } from "next/navigation";
 import { UserCreateType } from "@/shared/types";
 import Password from "antd/es/input/Password";
 import axios from "axios";
+import { useAppSelector } from "@/lib/store/store.hooks";
+import { RootState } from "@/lib/store/store";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -21,6 +27,7 @@ const validationSchema = Yup.object().shape({
 export default function SignUp() {
   const router = useRouter();
   const { loginUser, createUser, loginLoading } = useAuth();
+  const { loading } = useAppSelector((store: RootState) => store.auth);
   const handleLogin = () => {
     router.replace("/auth/login");
   };
@@ -47,6 +54,11 @@ export default function SignUp() {
 
     getCountries();
   }, []);
+
+  const roles = [
+    {label:"Admin", value:"admin"},
+    {label:"Student", value:"student"},
+  ]
   return (
     <div className="flex flex-col items-center justify-center w-[800px] h-full border py-3">
       <div>
@@ -165,6 +177,21 @@ export default function SignUp() {
                     </div>
                   </div>
 
+                  <div>
+                    <label
+                      htmlFor="role"
+                      className="block font-medium text-gray-100 text-[18px]"
+                    >
+                      Role
+                    </label>
+                    <Select
+                      id="role"
+                      onChange={(value) => setFieldValue("role", value)}
+                      style={{ height: "45px", width: "100%" }}
+                      options={roles}
+                    />
+                  </div>
+
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="address.country"
@@ -192,20 +219,20 @@ export default function SignUp() {
 
                   <div className="col-span-full">
                     <label
-                      htmlFor="streetAddress"
+                      htmlFor="address.streetAddress"
                       className="block font-medium text-gray-100 text-[18px]"
                     >
                       Street address
                     </label>
                     <div className="mt-2">
                       <InputField
-                        id="streetAddress"
-                        name="streetAddress"
+                        id="address.streetAddress"
+                        name="address.streetAddress"
                         type="text"
                         style={{ height: "45px" }}
                         autoComplete="streetAddress"
                         onChange={handleChange}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[18px]"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-[18px]"
                       />
                     </div>
                   </div>
@@ -252,19 +279,19 @@ export default function SignUp() {
 
                   <div className="sm:col-span-2">
                     <label
-                      htmlFor="postal-code"
+                      htmlFor="address.zipCode"
                       className="block font-medium text-gray-100 text-[18px]"
                     >
                       ZIP / Postal code
                     </label>
                     <div className="mt-2">
                       <InputField
-                        id="postal-code"
-                        name="postal-code"
+                        id="address.zipCode"
+                        name="address.zipCode"
                         type="text"
                         style={{ height: "45px" }}
                         onChange={handleChange}
-                        autoComplete="postal-code"
+                        autoComplete="address.zipCode"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                       />
                     </div>
@@ -296,12 +323,12 @@ export default function SignUp() {
                   fontSize: "18px",
                 }}
                 htmlType="submit"
-                loading={loginLoading}
-                disabled={loginLoading}
+                loading={loading}
+                disabled={loading}
                 className="w-full font-semibold border border-2 border-gray-100 shadow-md"
                 icon={<FontAwesomeIcon icon={faSignIn} />}
               >
-                Sign Up
+                {loading ? "Loading..." : "Sign Up"}
               </Button>
             </div>
           </form>

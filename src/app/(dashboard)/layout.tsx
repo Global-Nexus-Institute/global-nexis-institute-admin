@@ -39,6 +39,10 @@ const menuItems = [
   },
   {
     key: "2",
+    label: <Link href="/staff">Manage Staff</Link>,
+  },
+  {
+    key: "3",
     label: <Link href="/courses">Manage Courses</Link>,
   },
 ];
@@ -124,7 +128,13 @@ export default function DashboardLayout({
           collapsed={collapsed}
           style={siderStyle}
         >
-          <Menu theme="dark" items={menuItems} style={{ color: "white" }} mode="inline" className="text-white" />
+          <Menu
+            theme="dark"
+            items={menuItems}
+            style={{ color: "white" }}
+            mode="inline"
+            className="text-white"
+          />
         </Sider>
         <Layout style={{ backgroundColor: "#19173C" }}>
           <Header
@@ -136,35 +146,45 @@ export default function DashboardLayout({
             }}
           >
             {/* <div className="flex h-20 bg-gndarkblue"> */}
-              <div className="flex rounded-full basis-1/5  m-3 cursor-pointer" onClick={() => router.push("/")}><Image src="/images/logo.png" preview={false} height={50} className="bg-white" /></div>
-              <div className="flex basis-3/5 h-full bg-gndarkblue text-white">
-                <Menu
-                  onClick={onClick}
-                  selectedKeys={[current]}
-                  mode="horizontal"
-                  items={items}
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                  className="flex w-full items-center justify-center h-full bg-gndarkblue "
-                />
-              </div>
+            <div
+              className="flex rounded-full basis-1/5  m-3 cursor-pointer"
+              onClick={() => router.push("/")}
+            >
+              <Image
+                src="/images/logo.png"
+                preview={false}
+                height={50}
+                className="bg-white"
+              />
+            </div>
+            <div className="flex basis-3/5 h-full bg-gndarkblue text-white">
+              <Menu
+                onClick={onClick}
+                selectedKeys={[current]}
+                mode="horizontal"
+                items={items}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                className="flex w-full items-center justify-center h-full bg-gndarkblue "
+              />
+            </div>
 
-              <div className="flex justify-center items-center basis-1/5">
-                {user && (
-                  <div className="flex gap-4">
-                    <Avatar size={40}>{user.names && user.names[0]}</Avatar>{" "}
-                    <div
-                      onClick={handLogOut}
-                      className="text-white text-lg cursor-pointer"
-                    >
-                      Logout
-                    </div>
+            <div className="flex justify-center items-center basis-1/5">
+              {user && (
+                <div className="flex gap-4">
+                  <Avatar size={40}>{user.names && user.names[0]}</Avatar>{" "}
+                  <div
+                    onClick={handLogOut}
+                    className="text-white text-lg cursor-pointer"
+                  >
+                    Logout
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
             {/* </div> */}
           </Header>
           <Content className="m-4 h-full p-6 bg-gndarkblue shadow-md rounded-md ml-[15%]">

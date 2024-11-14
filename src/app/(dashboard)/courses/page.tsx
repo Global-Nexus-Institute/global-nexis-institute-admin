@@ -9,11 +9,18 @@ import {
   Card,
   Row,
   Col,
+  Space,
+  Modal,
+  Alert,
 } from "antd";
 import { useCourses } from "@/shared/hooks/courses/courses.hooks";
 import { useAppSelector } from "@/lib/store/store.hooks";
 import { RootState } from "@/lib/store/store";
 import { CoursesDataType } from "@/shared/types";
+import CustomButton from "@/components/custom-button/CustomButton";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import EditCourseForm from "./_components/course-forms/EditCourseForm";
 
 interface Course {
   _id: string;
@@ -24,9 +31,18 @@ interface Course {
 const Courses = () => {
   const [refresh, setRefresh] = useState(false);
   const [reload, setReload] = useState(false);
+  const [courseDetail, setCourseDetail] = useState<CoursesDataType>();
+  const [isOpen, setIsOpen] = useState(false);
+
   const { fetchCourses, fetchFromIllimidesk, updateCourseCost } = useCourses();
 
-  const { data: courses } = useAppSelector((store: RootState) => store.courses);
+  const {
+    data: courses,
+    loading,
+    updating,
+    error,
+    successMesage,
+  } = useAppSelector((store: RootState) => store.courses);
 
   useEffect(() => {
     fetchCourses();
@@ -42,26 +58,48 @@ const Courses = () => {
     setRefresh(!refresh);
   };
 
+  const openEditModal = () => setIsOpen(true);
+
+  const closeEditModal = () => {
+    setIsOpen(false);
+    handleRefresh();
+  };
+
   const columns: TableColumnProps<CoursesDataType>[] = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Description", dataIndex: "short_intro", key: "description" },
+    { title: "Price", dataIndex: "cost", key: "cost" },
     {
       title: "Action",
       key: "action",
       render: (_: any, record: CoursesDataType) => (
-        <Button
-          danger
-          className="bg-red-500 text-white"
-          onClick={() => console.log("remove course")}
-        >
-          Delete
-        </Button>
+        <Space>
+          <CustomButton
+            type="button"
+            icon={<FontAwesomeIcon icon={faEdit} />}
+            onClick={() => {
+              setCourseDetail(record);
+              openEditModal();
+              console.log("edit course");
+            }}
+          />
+          <CustomButton
+            className="bg-red-500 text-white"
+            title="delete"
+            onClick={() => console.log("remove course")}
+            icon={<FontAwesomeIcon icon={faTrash} />}
+          />
+        </Space>
       ),
     },
   ];
 
   return (
     <div className="h-full bg-gndarkblue">
+      {successMesage && (
+        <Alert message={successMesage} type="success" closable />
+      )}
+      {error && <Alert message={error} type="error" closable />}
       <div className="flex w-full justify-between">
         <h1 className="text-2xl font-bold mb-4 text-white">Manage Courses</h1>
         <Button>Update Course</Button>
@@ -86,6 +124,10 @@ const Courses = () => {
         <Col span={6}></Col>
       </Row>
       <Table columns={columns} dataSource={courses} rowKey="uuid" />
+
+      <Modal open={isOpen} onCancel={() => setIsOpen(false)} footer={false}>
+        <EditCourseForm courseDetail={courseDetail} onSubmit={closeEditModal} />
+      </Modal>
     </div>
   );
 };

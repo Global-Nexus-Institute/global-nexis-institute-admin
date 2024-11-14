@@ -65,7 +65,7 @@ export const updateCourseCostThunk = createAsyncThunk(
       console.log("Add cost :", res.data);
       return res.data;
     } catch (error: any) {
-      console.log("Sign up error:", error.response.data.error);
+      console.log("Add course Error:", error.response);
       return error.response.data.error;
     }
   },
@@ -126,7 +126,7 @@ const CourseSlice = createSlice({
       })
       .addCase(updateCourseCostThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.singleCourse = action.payload;
+        state.singleCourse = action.payload.course;
         state.successMesage = action.payload.message;
       })
       .addCase(updateCourseCostThunk.rejected, (state, action) => {
@@ -137,6 +137,10 @@ const CourseSlice = createSlice({
 });
 
 // Export the reducer to be added to the store
-export const { setErrorMessage, setSuccessMessage, resetCurseState, resetMessages } =
-  CourseSlice.actions;
+export const {
+  setErrorMessage,
+  setSuccessMessage,
+  resetCurseState,
+  resetMessages,
+} = CourseSlice.actions;
 export default CourseSlice.reducer;
